@@ -12,7 +12,7 @@ public class Department
     
     private Department() { }
 
-    private Department(Name name, Guid? parentId, Identifier identifier, Depth depth, Path path)
+    public Department(Name name, Guid? parentId, Identifier identifier, Depth depth, Path path)
     {
         Id = Guid.NewGuid();
         Name = name;

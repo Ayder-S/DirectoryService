@@ -39,15 +39,6 @@ public class Location
 
     public static Result<Location> Create(Name name, Address address, Timezone timezone)
     {
-        if (name is null)
-            return Result.Failure<Location>("Название не может быть пустым");
-
-        if (address is null)
-            return Result.Failure<Location>("Адрес не может быть пустым");
-
-        if (timezone is null)
-            return Result.Failure<Location>("Часовой пояс не может быть пустым");
-
         return new Location(name, address, timezone);
     }
 }

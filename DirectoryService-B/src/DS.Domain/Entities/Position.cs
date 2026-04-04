@@ -36,12 +36,6 @@ public class Position
 
     public static Result<Position> Create(Name name, Description description)
     {
-        if (name is null)
-            return Result.Failure<Position>("Должность не может быть пустой");
-
-        if (description is null)
-            return Result.Failure<Position>("Описание должности не может быть пустым");
-        
         return new Position(name, description);
     }
 }
