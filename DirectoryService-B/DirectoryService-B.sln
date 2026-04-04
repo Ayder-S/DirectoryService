@@ -11,6 +11,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B7208F1D-CA01-484D-B3D9-D92EB7586873}"
 	ProjectSection(SolutionItems) = preProject
 		..\.editorconfig = ..\.editorconfig
+		Directory.Build.props = Directory.Build.props
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DS.Application", "src\DS.Application\DS.Application.csproj", "{69ECC3F0-EECB-4FAB-8CD7-DD943077FE27}"
