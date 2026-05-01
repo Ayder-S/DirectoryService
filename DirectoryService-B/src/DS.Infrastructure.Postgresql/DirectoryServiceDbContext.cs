@@ -1,4 +1,5 @@
-﻿using DS.Domain.Entities;
+﻿using DS.Application.Database;
+using DS.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;

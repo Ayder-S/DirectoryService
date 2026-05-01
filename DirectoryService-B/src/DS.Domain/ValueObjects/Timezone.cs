@@ -32,6 +32,10 @@ public sealed record Timezone
             TZConvert.GetTimeZoneInfo(value);
             return true;
         }
+        catch (TimeZoneNotFoundException)
+        {
+            return false;
+        }
         catch (InvalidTimeZoneException)
         {
             return false;
