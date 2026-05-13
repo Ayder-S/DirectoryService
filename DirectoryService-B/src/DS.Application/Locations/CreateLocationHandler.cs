@@ -4,11 +4,11 @@ using DS.Application.Database;
 using DS.Domain.Entities;
 using DS.Domain.ValueObjects;
 using Microsoft.Extensions.Logging;
-using Shared.Failures;
+using Shared.AppFails;
 
 namespace DS.Application.Locations;
 
-public class CreateLocationHandler : ICommandHandler<CreateLocationCommand, Guid>
+public class CreateLocationHandler : ICommandHandler<Guid, CreateLocationCommand>
 {
     private readonly ILocationsRepository _locationsRepository;
     private readonly ILogger<CreateLocationHandler> _logger;
@@ -25,7 +25,7 @@ public class CreateLocationHandler : ICommandHandler<CreateLocationCommand, Guid
     {
         var nameResult = Name.Create(command.Request.Name);
         if(nameResult.IsFailure)
-            return nameResult.Error.ToFailures();
+            return nameResult.Error.ToErrors();
         
         var addressResult = Address.Create(
             command.Request.Address.Country,
@@ -34,19 +34,19 @@ public class CreateLocationHandler : ICommandHandler<CreateLocationCommand, Guid
             command.Request.Address.Street,
             command.Request.Address.Building);
         if(addressResult.IsFailure)
-            return addressResult.Error.ToFailures();
+            return addressResult.Error.ToErrors();
         
         var timezoneResult = Timezone.Create(command.Request.Timezone);
         if(timezoneResult.IsFailure)
-            return timezoneResult.Error.ToFailures();
+            return timezoneResult.Error.ToErrors();
         
         var location = Location.Create(nameResult.Value, addressResult.Value, timezoneResult.Value);
         if(location.IsFailure)
-            return location.Error.ToFailures();
+            return location.Error.ToErrors();
 
         var addResult = await _locationsRepository.Add(location.Value, cancellationToken);
         if (addResult.IsFailure)
-            return addResult.Error.ToFailures();
+            return addResult.Error.ToErrors();
 
         return location.Value.Id;
 

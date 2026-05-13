@@ -1,7 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
 using DS.Domain.Relation;
 using DS.Domain.ValueObjects;
-using Shared.Failures;
+using Shared.AppFails;
 
 namespace DS.Domain.Entities;
 

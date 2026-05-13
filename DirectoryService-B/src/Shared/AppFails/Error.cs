@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Shared.Failures;
+namespace Shared.AppFails;
 
 public record Error
 {
@@ -35,7 +35,7 @@ public record Error
     public static Error Conflict(string? code, string message) 
         => new (code ?? "conflict", message, ErrorType.Conflict);
 
-    public ErrorsList ToFailures() => this;
+    public ErrorsList ToErrors() => this;
 }
 
 [JsonConverter(typeof(JsonStringEnumConverter))]

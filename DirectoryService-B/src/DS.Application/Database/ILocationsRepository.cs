@@ -1,6 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
 using DS.Domain.Entities;
-using Shared.Failures;
+using Shared.AppFails;
 
 namespace DS.Application.Database;
 

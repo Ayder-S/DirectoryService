@@ -6,7 +6,7 @@ using DS.Application.Database;
 using DS.Domain.Entities;
 using DS.Infrastructure.Postgresql.Database;
 using Microsoft.Extensions.Logging;
-using Shared.Failures;
+using Shared.AppFails;
 
 namespace DS.Infrastructure.Postgresql.Repositories;
 
@@ -44,7 +44,9 @@ public class NpgsqlLocationsRepository : ILocationsRepository
             parameters.Add("CreatedAt", location.CreatedAt);
             parameters.Add("UpdatedAt", location.UpdatedAt);
 
-            await connection.ExecuteAsync(locationInsertSql, parameters);
+            // await connection.ExecuteAsync(locationInsertSql, parameters); // CancellationToken не передаётся в Dapper:
+            
+            await connection.ExecuteAsync(new CommandDefinition(locationInsertSql, parameters, transaction, cancellationToken: cancellationToken));
             
             transaction.Commit();
 

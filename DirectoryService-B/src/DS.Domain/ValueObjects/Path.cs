@@ -1,5 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
-using Shared.Failures;
+using Shared.AppFails;
 
 namespace DS.Domain.ValueObjects;
 

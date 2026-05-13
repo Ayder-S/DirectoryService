@@ -1,5 +1,5 @@
 using Shared;
-using Shared.Failures;
+using Shared.AppFails;
 
 namespace DS.WebApi.Middlewares;
 

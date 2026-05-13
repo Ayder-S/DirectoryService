@@ -2,7 +2,7 @@
 using DS.Application.Database;
 using DS.Domain.Entities;
 using Microsoft.Extensions.Logging;
-using Shared.Failures;
+using Shared.AppFails;
 
 namespace DS.Infrastructure.Postgresql.Repositories;
 

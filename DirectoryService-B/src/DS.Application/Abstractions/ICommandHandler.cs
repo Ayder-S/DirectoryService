@@ -1,5 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
-using Shared.Failures;
+using Shared.AppFails;
 
 namespace DS.Application.Abstractions;
 
@@ -11,7 +11,7 @@ public interface ICommandHandler<in TCommand>
     Task<UnitResult<ErrorsList>> Handle(TCommand command, CancellationToken cancellationToken);
 }
 
-public interface ICommandHandler<in TCommand, TResponse>
+public interface ICommandHandler<TResponse, in TCommand>
     where TCommand : ICommand
 {
     Task<Result<TResponse, ErrorsList>> Handle(TCommand command, CancellationToken cancellationToken);

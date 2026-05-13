@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 
-namespace Shared.Failures;
+namespace Shared.AppFails;
 
 public class ErrorsList : IEnumerable<Error>
 {
