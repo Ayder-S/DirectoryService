@@ -6,7 +6,7 @@
 
 ```
 .
-├── backend/    — .NET 9 (Clean Architecture)
+├── backend/    — .NET 10 (Clean Architecture)
 └── frontend/   — пока пусто
 ```
 
