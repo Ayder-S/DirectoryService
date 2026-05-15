@@ -52,7 +52,8 @@ builder.Services.AddDbContext<DirectoryServiceDbContext>(
 builder.Services.AddSingleton<IDbConnectionFactory, NpgsqlConnectionFactory>();
 
 builder.Services.AddScoped<ILocationsRepository, EfCoreLocationsRepository>();
-// builder.Services.AddScoped<ILocationsRepository, NpgsqlLocationsRepository>();
+
+  // builder.Services.AddScoped<ILocationsRepository, NpgsqlLocationsRepository>();
 
 
 builder.Services.AddApplication();
@@ -66,10 +67,12 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
     app.MapScalarApiReference(options => options
-        .WithTitle("DirectoryService")
+        .WithTitle("DirectoryService") 
         .WithOpenApiRoutePattern("/openapi/v1.json"));
 }
 
 app.MapControllers();
+
+app.MapGet("/api/health", () => Results.Ok(new { status = "ok" }));
 
 app.Run();
