@@ -5,6 +5,7 @@ using DS.Infrastructure.Postgresql.Database;
 using DS.Infrastructure.Postgresql.Repositories;
 using DS.WebApi.Middlewares;
 using Microsoft.EntityFrameworkCore;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -51,7 +52,8 @@ builder.Services.AddDbContext<DirectoryServiceDbContext>(
 builder.Services.AddSingleton<IDbConnectionFactory, NpgsqlConnectionFactory>();
 
 builder.Services.AddScoped<ILocationsRepository, EfCoreLocationsRepository>();
-// builder.Services.AddScoped<ILocationsRepository, NpgsqlLocationsRepository>();
+
+  // builder.Services.AddScoped<ILocationsRepository, NpgsqlLocationsRepository>();
 
 
 builder.Services.AddApplication();
@@ -64,9 +66,13 @@ app.UseExceptionMiddleware();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
-    app.UseSwaggerUI(options => options.SwaggerEndpoint("/openapi/v1.json", "DirectoryService"));
+    app.MapScalarApiReference(options => options
+        .WithTitle("DirectoryService") 
+        .WithOpenApiRoutePattern("/openapi/v1.json"));
 }
 
 app.MapControllers();
+
+app.MapGet("/api/health", () => Results.Ok(new { status = "ok" }));
 
 app.Run();
