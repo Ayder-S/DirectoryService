@@ -1,4 +1,4 @@
-﻿namespace DS.Contracts;
+﻿namespace DS.Contracts.Locations.Create;
 
 public record CreateAddressRequest(
     string Country,

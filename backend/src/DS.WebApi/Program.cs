@@ -72,6 +72,6 @@ if (app.Environment.IsDevelopment())
 
 app.MapControllers();
 
-app.MapGet("/api/health", () => Results.Ok(new { status = "ok" }));
+app.MapGet("/api/health", () => Results.Ok(new { status = "healthy" }));
 
 app.Run();

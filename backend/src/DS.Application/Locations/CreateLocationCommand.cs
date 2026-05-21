@@ -1,5 +1,5 @@
 ﻿using DS.Application.Abstractions;
-using DS.Contracts;
+using DS.Contracts.Locations.Create;
 
 namespace DS.Application.Locations;
 
