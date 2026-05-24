@@ -4,6 +4,7 @@ using CSharpFunctionalExtensions;
 using Dapper;
 using DS.Application.Database;
 using DS.Domain.Entities;
+using DS.Domain.ValueObjects;
 using DS.Infrastructure.Postgresql.Database;
 using Microsoft.Extensions.Logging;
 using Shared.AppFails;
@@ -59,5 +60,14 @@ public class NpgsqlLocationsRepository : ILocationsRepository
 
             return Error.Failure("location.add.failed", "Не удалось сохранить локацию");
         }
+    }
+
+    public async Task<bool> ExistsByName(Name name, CancellationToken cancellationToken)
+    {
+        using var connection = await _connectionFactory.CreateConnectionAsync(cancellationToken);
+
+        const string uniqueNameSql = "SELECT EXISTS(SELECT 1 FROM locations WHERE name = @Name)";
+
+        return await connection.ExecuteScalarAsync<bool>(new CommandDefinition(uniqueNameSql, new { Name = name.Value }, cancellationToken: cancellationToken));
     }
 }

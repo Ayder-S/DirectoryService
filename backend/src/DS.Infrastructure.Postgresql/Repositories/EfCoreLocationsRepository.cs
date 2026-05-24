@@ -1,6 +1,8 @@
 ﻿using CSharpFunctionalExtensions;
 using DS.Application.Database;
 using DS.Domain.Entities;
+using DS.Domain.ValueObjects;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Shared.AppFails;
 
@@ -33,5 +35,10 @@ public class EfCoreLocationsRepository : ILocationsRepository
             
             return Error.Failure("location.add.failed", "Не удалось сохранить локацию");
         }
+    }
+
+    public async Task<bool> ExistsByName(Name name, CancellationToken cancellationToken)
+    {
+        return await _dbContext.Locations.AnyAsync(l => l.Name == name, cancellationToken);
     }
 }
