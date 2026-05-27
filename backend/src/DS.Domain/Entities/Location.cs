@@ -37,4 +37,16 @@ public class Location
     {
         return new Location(name, address, timezone);
     }
+
+    public static Location RestoreFromDb(Guid id, Name name, Address address, Timezone timezone)
+    {
+        return new Location
+        {
+            Id = id,
+            Name = name,
+            Address = address,
+            Timezone = timezone,
+            UpdatedAt = DateTime.UtcNow,
+        };
+    }
 }
