@@ -19,7 +19,7 @@ public class CreateLocationRequestValidator : AbstractValidator<CreateLocationRe
                 a.Street,
                 a.Building));
         
-        RuleFor(l => l.Timezone)
+        RuleFor(l => l.TimeZone)
             .MustBeValueObject(Timezone.Create);
     }
 }
