@@ -35,7 +35,7 @@ public class ExceptionMiddleware
                 Error.Failure("bad.request", "Некорректный запрос")),
 
             KeyNotFoundException => (StatusCodes.Status404NotFound,
-                Error.NotFound("Ресурс / запись не найден(а)", null)),
+                Error.NotFound(null, "Ресурс / запись не найден(а)")),
 
             UnauthorizedAccessException => (StatusCodes.Status401Unauthorized,
                 Error.Failure("unauthorized", "Доступ запрещён")),

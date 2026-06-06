@@ -54,4 +54,29 @@ public class Department
         
         return new Department(name, parent?.Id, identifier, depthResult.Value, pathResult.Value);
     }
+
+    public static Department RestoreFromDb(
+        Guid id,
+        Name name,
+        Identifier identifier,
+        Guid? parentId,
+        Path path,
+        Depth depth,
+        bool isActive,
+        DateTime createdAt,
+        DateTime updatedAt)
+    {
+        return new Department
+        {
+            Id = id,
+            Name = name,
+            Identifier = identifier,
+            ParentId = parentId,
+            Path = path,
+            Depth = depth,
+            IsActive = isActive,
+            CreatedAt = createdAt,
+            UpdatedAt = updatedAt,
+        };
+    }
 }

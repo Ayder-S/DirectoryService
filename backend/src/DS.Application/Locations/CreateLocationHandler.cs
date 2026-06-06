@@ -1,6 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
 using DS.Application.Abstractions;
 using DS.Application.Commands;
+using DS.Application.Commands.Location;
 using DS.Application.Database;
 using DS.Application.Validation;
 using DS.Contracts.Locations.Create;

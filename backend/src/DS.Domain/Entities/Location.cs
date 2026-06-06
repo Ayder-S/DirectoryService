@@ -38,7 +38,14 @@ public class Location
         return new Location(name, address, timezone);
     }
 
-    public static Location RestoreFromDb(Guid id, Name name, Address address, Timezone timezone)
+    public static Location RestoreFromDb(
+        Guid id,
+        Name name,
+        Address address,
+        Timezone timezone,
+        bool isActive,
+        DateTime createdAt,
+        DateTime updatedAt)
     {
         return new Location
         {
@@ -46,7 +53,9 @@ public class Location
             Name = name,
             Address = address,
             Timezone = timezone,
-            UpdatedAt = DateTime.UtcNow,
+            IsActive = isActive,
+            CreatedAt = createdAt,
+            UpdatedAt = updatedAt,
         };
     }
 }

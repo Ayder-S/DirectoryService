@@ -3,6 +3,8 @@ using DS.Application.Database;
 using DS.Infrastructure.Postgresql;
 using DS.Infrastructure.Postgresql.Database;
 using DS.Infrastructure.Postgresql.Repositories;
+using DS.Infrastructure.Postgresql.Repositories.DepartmentsRepositories;
+using DS.Infrastructure.Postgresql.Repositories.LocationsRepositories;
 using DS.WebApi.Middlewares;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
@@ -14,6 +16,7 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.Converters
             .Add(new System.Text.Json.Serialization.JsonStringEnumConverter())); // глобальный конвертер enum'ов в строки
 
+Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true; // dapper будет сам маппить snake_case в PascalCase
 
 builder.Services.AddOpenApi(options =>
 {
@@ -54,9 +57,10 @@ builder.Services.AddSingleton<IDbConnectionFactory, NpgsqlConnectionFactory>();
 // builder.Services.AddScoped<ILocationsRepository, EfCoreLocationsRepository>();
 builder.Services.AddScoped<ILocationsRepository, NpgsqlLocationsRepository>();
 
+// builder.Services.AddScoped<IDepartmentsRepository, EfCoreDepartmentsRepository>();
+builder.Services.AddScoped<IDepartmentsRepository, NpgsqlDepartmentsRepository>();
 
 builder.Services.AddApplication();
-
 
 var app = builder.Build();
 
