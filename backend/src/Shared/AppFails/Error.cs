@@ -23,8 +23,8 @@ public record Error
     public static Error Unknown(string message)
         => new("error.unknown", message, ErrorType.Unknown);
     
-    public static Error NotFound(string message, Guid? id, string code = "record.not.found") 
-        => new(code, message, ErrorType.NotFound);
+    public static Error NotFound(string? code, string message)                                                                                                                                               
+        => new(code ?? "record.not.found", message, ErrorType.NotFound);
     
     public static Error Validation(string? code, string message, string? invalidField = null) 
         => new(code ?? "record.is.not.valid", message, ErrorType.Validation, invalidField);

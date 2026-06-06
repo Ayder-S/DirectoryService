@@ -1,7 +1,10 @@
 using DS.Application.Abstractions;
+using DS.Application.Commands;
+using DS.Application.Commands.Location;
 using DS.Application.Locations;
 using DS.Contracts.Locations.Create;
 using DS.Contracts.Locations.Get;
+using DS.Contracts.Locations.Update;
 using Microsoft.AspNetCore.Mvc;
 using Shared.EndpointsResult;
 using Shared.Pagination;
@@ -46,19 +49,24 @@ public class LocationsController : ControllerBase
         return Ok();
     }
     
-    // [HttpPut("{locationId:guid}")]
-    // public async Task<EndpointResult<Guid>> Update(
-    //     [FromRoute] Guid locationId,
-    //     [FromServices] ICommandHandler<Guid, UpdateLocationCommand> handler,
-    //     [FromBody] UpdateLocationRequest request,
-    //     CancellationToken cancellationToken)
-    // {
-    //     
-    // } позже будет реализация 
     [HttpPut("{locationId:guid}")]
-    public async Task<IActionResult> Update([FromRoute] Guid locationId, CancellationToken cancellationToken)
+    public async Task<EndpointResult<Guid>> Update(
+        [FromRoute] Guid locationId,
+        [FromServices] ICommandHandler<Guid, UpdateLocationCommand> handler,
+        [FromBody] UpdateLocationRequest request,
+        CancellationToken cancellationToken)
     {
-        return Ok();
+        return await handler.Handle(new UpdateLocationCommand(locationId, request), cancellationToken);
+    }
+    
+    [HttpPatch("{locationId:guid}/name")]
+    public async Task<EndpointResult<Guid>> UpdateName(
+        [FromRoute] Guid locationId,
+        [FromServices] ICommandHandler<Guid, UpdateLocationNameCommand> handler,
+        [FromBody] UpdateLocationNameRequest request,
+        CancellationToken cancellationToken)
+    {
+        return await handler.Handle(new UpdateLocationNameCommand(locationId, request), cancellationToken);
     }
 
     // [HttpDelete("{locationId:guid}")]

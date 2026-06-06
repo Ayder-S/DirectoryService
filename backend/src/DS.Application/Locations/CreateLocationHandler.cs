@@ -1,5 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
 using DS.Application.Abstractions;
+using DS.Application.Commands;
+using DS.Application.Commands.Location;
 using DS.Application.Database;
 using DS.Application.Validation;
 using DS.Contracts.Locations.Create;
@@ -35,6 +37,12 @@ public class CreateLocationHandler : ICommandHandler<Guid, CreateLocationCommand
         
         var nameResult = Name.Create(command.Request.Name).Value;
         
+        if (await _locationsRepository.ExistsByName(nameResult, cancellationToken))
+        {
+            return Error.Conflict(
+                "location.name.taken", $"Локация с названием '{nameResult.Value}' уже существует").ToErrors();
+        }
+        
         var addressResult = Address.Create(
             command.Request.Address.Country,
             command.Request.Address.Region,
@@ -42,13 +50,7 @@ public class CreateLocationHandler : ICommandHandler<Guid, CreateLocationCommand
             command.Request.Address.Street,
             command.Request.Address.Building).Value;
         
-        var timezoneResult = Timezone.Create(command.Request.Timezone).Value;
-
-        if (await _locationsRepository.ExistsByName(nameResult, cancellationToken))
-        {
-            return Error.Conflict(
-                    "location.name.taken", $"Локация с названием '{nameResult.Value}' уже существует").ToErrors();
-        }
+        var timezoneResult = Timezone.Create(command.Request.TimeZone).Value;
 
         var location = Location.Create(nameResult, addressResult, timezoneResult);
         if(location.IsFailure)

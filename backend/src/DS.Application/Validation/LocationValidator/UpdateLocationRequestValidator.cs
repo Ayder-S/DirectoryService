@@ -1,12 +1,12 @@
-﻿using DS.Contracts.Locations.Create;
+﻿using DS.Contracts.Locations.Update;
 using DS.Domain.ValueObjects;
 using FluentValidation;
 
 namespace DS.Application.Validation.LocationValidator;
 
-public class CreateLocationRequestValidator : AbstractValidator<CreateLocationRequest>
+public class UpdateLocationRequestValidator : AbstractValidator<UpdateLocationRequest>
 {
-    public CreateLocationRequestValidator()
+    public UpdateLocationRequestValidator()
     {
         RuleFor(l => l.Name)
             .MustBeValueObject(Name.Create);
