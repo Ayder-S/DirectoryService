@@ -152,11 +152,11 @@ public class NpgsqlLocationsRepository : ILocationsRepository
             parameters.Add("Timezone", timezone.Value);
             parameters.Add("UpdatedAt", DateTime.UtcNow);
 
-            // await connection.ExecuteAsync(locationInsertSql, parameters); // CancellationToken не передаётся в Dapper:
             int rowsAffected = await connection.ExecuteAsync(
                 new CommandDefinition(
                     updateLocationSql,
                     parameters,
+                    transaction,
                     cancellationToken: cancellationToken));
 
             if (rowsAffected == 0)
@@ -196,11 +196,11 @@ public class NpgsqlLocationsRepository : ILocationsRepository
                 UpdatedAt = DateTime.UtcNow,
             };
 
-            // await connection.ExecuteAsync(locationInsertSql, parameters); // CancellationToken не передаётся в Dapper:
             int rowsAffected = await connection.ExecuteAsync(
                 new CommandDefinition(
                     updateNameSql,
                     parameters, 
+                    transaction,
                     cancellationToken: cancellationToken));
 
             if (rowsAffected == 0)
