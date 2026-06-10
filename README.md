@@ -6,7 +6,7 @@
 
 ```
 .
-├── backend/    — .NET 10 (Clean Architecture)
+├── backend/    — .NET 10 
 └── frontend/   — пока пусто
 ```
 
@@ -18,7 +18,7 @@
 
 ```bash
 cd backend
-docker compose up -d              # PostgreSQL на :5434
+docker compose up -d
 dotnet run --project src/DS.WebApi
 ```
 
@@ -34,12 +34,12 @@ dotnet ef database update --project src/DS.Infrastructure.Postgresql --startup-p
 
 ### Проекты
 
-| Проект | Назначение |
+| Проект                         | Назначение |
 |---|---|
-| `DS.Domain` | Сущности, value objects |
-| `DS.Application` | Use cases, обработчики команд |
+| `DS.Domain`                    | Сущности, value objects |
+| `DS.Application`               | Use cases, обработчики команд |
 | `DS.Infrastructure.Postgresql` | EF Core, репозитории, миграции |
-| `DS.Presenters` | Контроллеры |
-| `DS.WebApi` | Хост, DI, middleware |
-| `DS.Contracts` | DTO для входящих запросов |
-| `Shared` | Общие типы (Result, Envelope, константы) |
+| `DS.Presenters`                | Контроллеры |
+| `DS.WebApi`                    | Хост, DI, middleware |
+| `DS.Contracts`                 | DTO для входящих запросов |
+| `Shared`                       | Общие типы (Result, Envelope, константы) |
