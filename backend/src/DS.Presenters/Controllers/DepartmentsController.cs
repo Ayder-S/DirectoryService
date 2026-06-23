@@ -1,6 +1,7 @@
 ﻿using DS.Application.Abstractions;
 using DS.Application.Commands.Department;
 using DS.Contracts.Departments.Create;
+using DS.Contracts.Departments.Update;
 using Microsoft.AspNetCore.Mvc;
 using Shared.EndpointsResult;
 
@@ -18,5 +19,25 @@ public class DepartmentsController : ControllerBase
     {
         return await handler.Handle(new CreateDepartmentCommand(request), cancellationToken);
     }
+
+    // [HttpPut("{departmentId:guid}")]
+    // public async Task<EndpointResult<Guid>> UpdateDepartment(
+    //     [FromRoute] Guid departmentId,
+    //     [FromServices] ICommandHandler<Guid, UpdateDepartmentNameCommand> handler,
+    //     [FromBody] UpdateDepartmentNameRequest request,
+    //     CancellationToken cancellationToken)
+    // {
+    //     return await handler.Handle(new UpdateDepartmentNameCommand(departmentId, request), cancellationToken);
+    // }
     
+    [HttpPatch("{departmentId:guid}")]
+    public async Task<EndpointResult<Guid>> Update(
+        [FromRoute] Guid departmentId,
+        [FromServices] ICommandHandler<Guid, UpdateDepartmentNameCommand> handler,
+        [FromBody] UpdateDepartmentNameRequest request,
+        CancellationToken cancellationToken)
+    {
+        return await handler.Handle(new UpdateDepartmentNameCommand(departmentId, request), cancellationToken);
+    }
+
 }
