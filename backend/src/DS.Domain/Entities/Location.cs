@@ -38,6 +38,20 @@ public class Location
         return new Location(name, address, timezone);
     }
 
+    public void UpdateLocation(Name name, Address address, Timezone timezone)
+    {
+        Name = name;
+        Address = address;
+        Timezone = timezone;
+        UpdatedAt = DateTime.UtcNow;
+    }
+
+    public void RenameLocation(Name name)
+    {
+        Name = name;
+        UpdatedAt = DateTime.UtcNow;
+    }
+
     public static Location RestoreFromDb(
         Guid id,
         Name name,
