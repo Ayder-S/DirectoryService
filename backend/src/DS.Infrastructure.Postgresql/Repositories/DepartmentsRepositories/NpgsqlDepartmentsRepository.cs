@@ -146,4 +146,95 @@ public class NpgsqlDepartmentsRepository : IDepartmentsRepository
             return Error.Failure("department.get.failed", "Не удалось получить подразделение");
         }
     }
+
+    public async Task<UnitResult<Error>> Update(Department department, CancellationToken cancellationToken)
+    {
+        using var connection = await _connectionFactory.CreateConnectionAsync(cancellationToken);
+        
+        using var transaction = connection.BeginTransaction();
+
+        try
+        {
+            const string updateDepartmentSql = """
+                                               UPDATE departments
+                                               SET name = @Name, identifier = @Identifier, depth = @Depth, path = @Path, updated_at = @UpdatedAt
+                                               WHERE id = @Id
+                                               """;
+            
+            var parameters = new
+            {
+                Id = department.Id,
+                Name = department.Name.Value,
+                Identifier = department.Identifier,
+                Depth = department.Depth.Value,
+                Path = department.Path.Value,
+                UpdatedAt = department.UpdatedAt,
+            };
+            
+            int rowsAffected = await connection.ExecuteAsync(
+                new CommandDefinition(
+                    updateDepartmentSql,
+                    parameters,
+                    transaction,
+                    cancellationToken: cancellationToken));
+
+            if (rowsAffected == 0)
+                return Error.NotFound("department.not_found", $"Подразделение {department.Id} не найдено");
+            
+            transaction.Commit();
+            
+            return UnitResult.Success<Error>();
+        }
+        catch (Exception exception)
+        {
+            transaction.Rollback();
+            
+            _logger.LogError(exception, "Не удалось обновить название подразделения {DepartmentId}",  department.Id);
+            return Error.Failure("department.name.update.failed", "Не удалось обновить название подразделения");
+        }
+    }
+
+    public async Task<UnitResult<Error>> UpdateName(Department department, CancellationToken cancellationToken)
+    {
+        using var connection = await _connectionFactory.CreateConnectionAsync(cancellationToken);
+
+        using var transaction = connection.BeginTransaction();
+
+        try
+        {
+            const string updateNameSql = """
+                                         UPDATE departments
+                                         SET name = @Name, updated_at = @UpdatedAt
+                                         WHERE id = @Id
+                                         """;
+
+            var parameters = new
+            {
+                Id = department.Id,
+                Name = department.Name.Value,
+                UpdatedAt = department.UpdatedAt,
+            };
+
+            int rowsAffected = await connection.ExecuteAsync(
+                new CommandDefinition(
+                    updateNameSql,
+                    parameters,
+                    transaction,
+                    cancellationToken: cancellationToken));
+
+            if (rowsAffected == 0)
+                return Error.NotFound("department.not_found", $"Подразделение {department.Id} не найдено");
+            
+            transaction.Commit();
+            
+            return UnitResult.Success<Error>();
+        }
+        catch (Exception exception)
+        {
+            transaction.Rollback();
+            
+            _logger.LogError(exception, "Не удалось обновить название подразделения {DepartmentId}",  department.Id);
+            return Error.Failure("department.name.update.failed", "Не удалось обновить название подразделения");
+        }
+    }
 }

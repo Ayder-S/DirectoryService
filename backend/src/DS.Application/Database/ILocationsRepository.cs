@@ -11,14 +11,9 @@ public interface ILocationsRepository
     
     Task<Result<Location, Error>> GetById(Guid locationId, CancellationToken cancellationToken);
 
-    Task<UnitResult<Error>> Update(
-        Guid locationId,
-        Name name,
-        Address address,
-        Timezone timezone,
-        CancellationToken cancellationToken);
+    Task<UnitResult<Error>> Update(Location location, CancellationToken cancellationToken);
     
-    Task<UnitResult<Error>> UpdateName(Guid locationId, Name name, CancellationToken cancellationToken);
+    Task<UnitResult<Error>> UpdateName(Location location, CancellationToken cancellationToken);
     
     Task<bool> ExistsByName(Name name, CancellationToken cancellationToken);
    
