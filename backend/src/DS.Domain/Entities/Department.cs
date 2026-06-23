@@ -55,6 +55,12 @@ public class Department
         return new Department(name, parent?.Id, identifier, depthResult.Value, pathResult.Value);
     }
 
+    public void UpdateDepartment(Name name)
+    {
+        Name = name;
+        UpdatedAt = DateTime.UtcNow;
+    }
+
     public static Department RestoreFromDb(
         Guid id,
         Name name,

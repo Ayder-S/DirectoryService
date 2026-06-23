@@ -124,13 +124,8 @@ public class NpgsqlLocationsRepository : ILocationsRepository
             return Error.Failure("location.get.failed", "Не удалось получить локацию");
         }
     }
-
-    public async Task<UnitResult<Error>> Update(
-        Guid locationId,
-        Name name,
-        Address address,
-        Timezone timezone,
-        CancellationToken cancellationToken)
+    
+    public async Task<UnitResult<Error>> Update(Location location, CancellationToken cancellationToken)
     {
         using var connection = await _connectionFactory.CreateConnectionAsync(cancellationToken);
 
@@ -146,11 +141,11 @@ public class NpgsqlLocationsRepository : ILocationsRepository
 
             // Dapper не поддерживает приведение типов ::jsonb прямо в параметре. Нужно передавать jsonb через NpgsqlParameter
             var parameters = new DynamicParameters();
-            parameters.Add("Id", locationId);
-            parameters.Add("Name", name.Value);
-            parameters.Add("Address", JsonSerializer.Serialize(address), DbType.Object);
-            parameters.Add("Timezone", timezone.Value);
-            parameters.Add("UpdatedAt", DateTime.UtcNow);
+            parameters.Add("Id", location.Id);
+            parameters.Add("Name", location.Name.Value);
+            parameters.Add("Address", JsonSerializer.Serialize(location.Address), DbType.Object);
+            parameters.Add("Timezone", location.Timezone.Value);
+            parameters.Add("UpdatedAt", location.UpdatedAt);
 
             int rowsAffected = await connection.ExecuteAsync(
                 new CommandDefinition(
@@ -160,7 +155,7 @@ public class NpgsqlLocationsRepository : ILocationsRepository
                     cancellationToken: cancellationToken));
 
             if (rowsAffected == 0)
-                return Error.NotFound("location.not_found", $"Локация {locationId} не найдена");
+                return Error.NotFound("location.not_found", $"Локация {location.Id} не найдена");
 
             transaction.Commit();
 
@@ -170,13 +165,13 @@ public class NpgsqlLocationsRepository : ILocationsRepository
         {
             transaction.Rollback();
 
-            _logger.LogError(exception, "Не удалось обновить локацию {LocationId}", locationId);
+            _logger.LogError(exception, "Не удалось обновить локацию {LocationId}", location.Id);
 
             return Error.Failure("location.update.failed", "Не удалось обновить локацию");
         }
     }
 
-    public async Task<UnitResult<Error>> UpdateName(Guid locationId, Name name, CancellationToken cancellationToken)
+    public async Task<UnitResult<Error>> UpdateName(Location location, CancellationToken cancellationToken)
     {
         using var connection = await _connectionFactory.CreateConnectionAsync(cancellationToken);
 
@@ -190,10 +185,11 @@ public class NpgsqlLocationsRepository : ILocationsRepository
                                              WHERE id = @Id
                                              """;
 
-            var parameters = new { 
-                Id = locationId,
-                Name = name.Value,
-                UpdatedAt = DateTime.UtcNow,
+            var parameters = new 
+            { 
+                Id = location.Id,
+                Name = location.Name.Value,
+                UpdatedAt = location.UpdatedAt,
             };
 
             int rowsAffected = await connection.ExecuteAsync(
@@ -204,7 +200,7 @@ public class NpgsqlLocationsRepository : ILocationsRepository
                     cancellationToken: cancellationToken));
 
             if (rowsAffected == 0)
-                return Error.NotFound("location.not_found", $"Локация {locationId} не найдена");
+                return Error.NotFound("location.not_found", $"Локация {location.Id} не найдена");
             
             transaction.Commit();
             
@@ -214,12 +210,12 @@ public class NpgsqlLocationsRepository : ILocationsRepository
         {
             transaction.Rollback();
             
-            _logger.LogError(exception, "Не удалось обновить название локации {LocationId}", locationId);
-
+            _logger.LogError(exception, "Не удалось обновить название локации {LocationId}", location.Id);
             return Error.Failure("location.name.update.failed", "Не удалось обновить название локации");
         }
     }
 
+    
     public async Task<bool> ExistsByName(Name name, CancellationToken cancellationToken)
     {
         using var connection = await _connectionFactory.CreateConnectionAsync(cancellationToken);
@@ -240,7 +236,8 @@ public class NpgsqlLocationsRepository : ILocationsRepository
         using var connection = await _connectionFactory.CreateConnectionAsync(cancellationToken);
         
         const string uniqueNameWithoutIdSql = """
-                                              SELECT EXISTS(SELECT 1 FROM locations WHERE name = @Name AND id <> @Id)
+                                              SELECT EXISTS(SELECT 1 FROM locations
+                                              WHERE name = @Name AND id <> @Id)
                                               """;
 
         return await connection.ExecuteScalarAsync<bool>(

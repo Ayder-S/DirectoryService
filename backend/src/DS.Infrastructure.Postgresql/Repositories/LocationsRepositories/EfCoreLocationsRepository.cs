@@ -55,56 +55,50 @@ public class EfCoreLocationsRepository : ILocationsRepository
         }
     }
 
-    public async Task<UnitResult<Error>> Update(
-        Guid locationId,
-        Name name,
-        Address address,
-        Timezone timezone,
-        CancellationToken cancellationToken)
+    public async Task<UnitResult<Error>> Update(Location location, CancellationToken cancellationToken)
     {
         try
         {
             int rowsAffected = await _dbContext.Locations
-                .Where(l => l.Id == locationId)
+                .Where(l => l.Id == location.Id)
                 .ExecuteUpdateAsync(
                     setter => setter
-                        .SetProperty(l => l.Name, name)
-                        .SetProperty(l => l.Address, address)
-                        .SetProperty(l => l.Timezone, timezone)
-                        .SetProperty(l => l.UpdatedAt, DateTime.UtcNow),
-                    cancellationToken);
+                        .SetProperty(l => l.Name, location.Name)
+                        .SetProperty(l => l.Address, location.Address)
+                        .SetProperty(l => l.Timezone, location.Timezone)
+                        .SetProperty(l => l.UpdatedAt, location.UpdatedAt), cancellationToken);
 
             if (rowsAffected == 0)
-                return Error.NotFound("location.not_found", $"Локация {locationId} не найдена");
+                return Error.NotFound("location.not_found", $"Локация {location.Id} не найдена");
 
             return UnitResult.Success<Error>();
         }
         catch (Exception exception)
         {
-            _logger.LogError(exception, "Не удалось обновить локацию {LocationId}", locationId);
+            _logger.LogError(exception, "Не удалось обновить локацию {LocationId}", location.Id);
             return Error.Failure("location.update.failed", "Не удалось обновить локацию");
         }
     }
-
-    public async Task<UnitResult<Error>> UpdateName(Guid locationId, Name name, CancellationToken cancellationToken)
+    
+    public async Task<UnitResult<Error>> UpdateName(Location location, CancellationToken cancellationToken)
     {
         try
         {
             int rowsAffected = await _dbContext.Locations
-                .Where(l => l.Id == locationId)
+                .Where(l => l.Id == location.Id)
                 .ExecuteUpdateAsync(
                     setter => setter
-                        .SetProperty(l => l.Name, name)
-                        .SetProperty(l => l.UpdatedAt, DateTime.UtcNow), cancellationToken);
+                        .SetProperty(l => l.Name, location.Name)
+                        .SetProperty(l => l.UpdatedAt, location.UpdatedAt), cancellationToken);
 
             if (rowsAffected == 0)
-                return Error.NotFound("location.not_found", $"Локация {locationId} не найдена");
+                return Error.NotFound("location.not_found", $"Локация {location.Id} не найдена");
             
             return UnitResult.Success<Error>();
         }
         catch (Exception exception)
         {
-            _logger.LogError(exception, "Не удалось обновить название локации {LocationId}", locationId);
+            _logger.LogError(exception, "Не удалось обновить название локации {LocationId}", location.Id);
 
             return Error.Failure("location.name.update.failed", "Не удалось обновить название локации");
         }

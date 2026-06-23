@@ -23,17 +23,6 @@ public class LocationsController : ControllerBase
     {
         return await handler.Handle(new CreateLocationCommand(request), cancellationToken);
     }
-
-    // [HttpGet("locationId:guid")]
-    // public async Task<EndpointResult<Guid>> GetById([FromRoute]Guid locationId, CancellationToken cancellationToken)
-    // {
-    //     
-    // }
-    [HttpGet("{locationId:guid}")]
-    public async Task<IActionResult> GetById([FromRoute] Guid locationId, CancellationToken cancellationToken)
-    {
-        return Ok();
-    }
     
     // [HttpGet]
     // public async Task<EndpointResult<PagedResult<GetLocationsRequest>>> Get(
@@ -49,8 +38,8 @@ public class LocationsController : ControllerBase
         return Ok();
     }
     
-    [HttpPut("{locationId:guid}")]
-    public async Task<EndpointResult<Guid>> Update(
+    [HttpPatch("{locationId:guid}")]
+    public async Task<EndpointResult<Guid>> UpdateLocation(
         [FromRoute] Guid locationId,
         [FromServices] ICommandHandler<Guid, UpdateLocationCommand> handler,
         [FromBody] UpdateLocationRequest request,
@@ -60,7 +49,7 @@ public class LocationsController : ControllerBase
     }
     
     [HttpPatch("{locationId:guid}/name")]
-    public async Task<EndpointResult<Guid>> UpdateName(
+    public async Task<EndpointResult<Guid>> Update(
         [FromRoute] Guid locationId,
         [FromServices] ICommandHandler<Guid, UpdateLocationNameCommand> handler,
         [FromBody] UpdateLocationNameRequest request,

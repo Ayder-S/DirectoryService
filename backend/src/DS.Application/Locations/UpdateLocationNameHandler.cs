@@ -38,12 +38,19 @@ public class UpdateLocationNameHandler : ICommandHandler<Guid, UpdateLocationNam
         
         if (await _locationsRepository.ExistsByNameWithoutId(name, command.Id, cancellationToken))
             return Error.Conflict("location.name.taken", $"Локация с названием '{name.Value}' уже существует").ToErrors();
+        
+        var locationResult = await _locationsRepository.GetById(command.Id, cancellationToken);
+        if (locationResult.IsFailure)
+            return locationResult.Error.ToErrors();
+        
+        var location = locationResult.Value;
 
-        var updateResult = await _locationsRepository.UpdateName(command.Id, name, cancellationToken);
+        location.RenameLocation(name);
+
+        var updateResult = await _locationsRepository.UpdateName(location, cancellationToken);
         if (updateResult.IsFailure)
             return updateResult.Error.ToErrors();
 
         return command.Id;
     }
-
 }

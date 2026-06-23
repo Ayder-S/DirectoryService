@@ -60,4 +60,53 @@ public class EfCoreDepartmentsRepository : IDepartmentsRepository
             return Error.Failure ("department.get.failed", "Не удалось получить подразделение");
         }
     }
+
+    public async Task<UnitResult<Error>> Update(Department department, CancellationToken cancellationToken)
+    {
+        try
+        {
+            int rowsAffected = await _dbContext.Departments
+                .Where(d => d.Id == department.Id)
+                .ExecuteUpdateAsync(
+                    setter => setter
+                        .SetProperty(d => d.Name, department.Name)
+                        .SetProperty(d => d.Identifier, department.Identifier)
+                        .SetProperty(d => d.Depth, department.Depth)
+                        .SetProperty(d => d.Path, department.Path)
+                        .SetProperty(d => d.UpdatedAt, department.UpdatedAt), cancellationToken);
+
+            if (rowsAffected == 0)
+                return Error.NotFound("department.not_found", $"Подразделение {department.Id} не найдено");
+            
+            return UnitResult.Success<Error>();
+        }
+        catch (Exception exception)
+        {
+            _logger.LogError(exception, "Не удалось обновить название подразделения {DepartmentId}",  department.Id);
+            return Error.Failure("department.name.update.failed", "Не удалось обновить название подразделения");
+        }
+    }
+
+    public async Task<UnitResult<Error>> UpdateName(Department department, CancellationToken cancellationToken)
+    {
+        try
+        {
+            int rowsAffected = await _dbContext.Departments
+                .Where(d => d.Id == department.Id)
+                .ExecuteUpdateAsync(
+                    setter => setter
+                    .SetProperty(d => d.Name, department.Name)
+                    .SetProperty(d => d.UpdatedAt, department.UpdatedAt), cancellationToken);
+
+            if (rowsAffected == 0)
+                return Error.NotFound("department.not_found", $"Подразделение {department.Id} не найдено");
+            
+            return UnitResult.Success<Error>();
+        }
+        catch (Exception exception)
+        {
+            _logger.LogError(exception, "Не удалось обновить название подразделения {DepartmentId}",  department.Id);
+            return Error.Failure("departmnet.name.update.failed", "Не удалось обновить название подразделения");
+        }
+    }
 }
