@@ -45,7 +45,7 @@ public record Path
     public static Path ReadPath(string value)
     {
         if (string.IsNullOrWhiteSpace(value))
-            throw new InvalidOperationException($"Невалидное значение Path в БД: '{value}'");
+            throw new InvalidOperationException($"Невалидное значение Path в БД: '{value}'"); // NOT NULL в схеме
     
         return new Path(value);
     }
