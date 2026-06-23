@@ -1,6 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
 using DS.Application.Abstractions;
-using DS.Application.Commands;
 using DS.Application.Commands.Location;
 using DS.Application.Database;
 using DS.Application.Validation;
@@ -34,6 +33,12 @@ public class UpdateLocationHandler : ICommandHandler<Guid, UpdateLocationCommand
         var validationResult = await _validator.ValidateAsync(command.Request, cancellationToken);
         if (!validationResult.IsValid)
             return validationResult.ToErrors();
+        
+        var locationResult = await _locationsRepository.GetById(command.Id,  cancellationToken);
+        if (locationResult.IsFailure)
+            return locationResult.Error.ToErrors();
+        
+        var location = locationResult.Value;
 
         var name = Name.Create(command.Request.Name).Value;
 
@@ -48,8 +53,10 @@ public class UpdateLocationHandler : ICommandHandler<Guid, UpdateLocationCommand
         
         if (await _locationsRepository.ExistsByNameWithoutId(name, command.Id, cancellationToken))
             return Error.Conflict("location.name.taken", $"Локация с названием '{name.Value}' уже существует").ToErrors();
+        
+        location.UpdateLocation(name, address, timezone);
 
-        var updateResult = await _locationsRepository.Update(command.Id, name, address, timezone, cancellationToken);
+        var updateResult = await _locationsRepository.Update(location, cancellationToken);
         if (updateResult.IsFailure)
             return updateResult.Error.ToErrors();
 
