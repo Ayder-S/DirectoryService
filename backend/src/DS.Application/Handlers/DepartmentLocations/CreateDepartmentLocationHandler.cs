@@ -1,11 +1,11 @@
 ﻿using CSharpFunctionalExtensions;
-using DS.Application.Abstractions;
 using DS.Application.Commands.DepartmentLocation;
-using DS.Application.Database;
+using DS.Application.Interfaces.Abstractions;
+using DS.Application.Interfaces.Database;
 using Microsoft.Extensions.Logging;
-using Shared.AppFails;
+using Shared.Kernel.AppFails;
 
-namespace DS.Application.DepartmentLocations;
+namespace DS.Application.Handlers.DepartmentLocations;
 
 public class CreateDepartmentLocationHandler : ICommandHandler<CreateDepartmentLocationCommand>
 {
@@ -47,6 +47,8 @@ public class CreateDepartmentLocationHandler : ICommandHandler<CreateDepartmentL
             
         if (relationResult.IsFailure)
             return relationResult.Error.ToErrors();
+        
+        _logger.LogInformation("Связь между Подразделением {DepartmentId} и Локацией {LocationId} успешно создана", command.DepartmentId, command.LocationId);
         
         return UnitResult.Success<ErrorsList>();
     }

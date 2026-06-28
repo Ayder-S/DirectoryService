@@ -1,5 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
-using Shared.AppFails;
+using Shared.Kernel.AppFails;
 using TimeZoneConverter;
 
 namespace DS.Domain.ValueObjects;

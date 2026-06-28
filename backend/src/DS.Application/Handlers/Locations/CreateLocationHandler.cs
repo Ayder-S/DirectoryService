@@ -1,17 +1,16 @@
 ﻿using CSharpFunctionalExtensions;
-using DS.Application.Abstractions;
-using DS.Application.Commands;
 using DS.Application.Commands.Location;
-using DS.Application.Database;
+using DS.Application.Interfaces.Abstractions;
+using DS.Application.Interfaces.Database;
 using DS.Application.Validation;
 using DS.Contracts.Locations.Create;
 using DS.Domain.Entities;
 using DS.Domain.ValueObjects;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
-using Shared.AppFails;
+using Shared.Kernel.AppFails;
 
-namespace DS.Application.Locations;
+namespace DS.Application.Handlers.Locations;
 
 public class CreateLocationHandler : ICommandHandler<Guid, CreateLocationCommand>
 {
@@ -31,6 +30,9 @@ public class CreateLocationHandler : ICommandHandler<Guid, CreateLocationCommand
 
     public async Task<Result<Guid, ErrorsList>> Handle(CreateLocationCommand command, CancellationToken cancellationToken)
     {
+        if (command.Request is null)
+            return Error.Validation("request.is.required", "Тело запроса обязательно").ToErrors();
+        
         var validationResult = await _validator.ValidateAsync(command.Request, cancellationToken);
         if (!validationResult.IsValid)
             return validationResult.ToErrors();
@@ -59,6 +61,8 @@ public class CreateLocationHandler : ICommandHandler<Guid, CreateLocationCommand
         var addResult = await _locationsRepository.Add(location.Value, cancellationToken);
         if (addResult.IsFailure)
             return addResult.Error.ToErrors();
+        
+        _logger.LogInformation("Локация {LocationId} успешно создана с названием {LocationName}", location.Value.Id, nameResult.Value);
 
         return location.Value.Id;
     }

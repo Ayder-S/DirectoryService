@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Shared.AppFails;
+namespace Shared.Kernel.AppFails;
 
 public record Error
 {

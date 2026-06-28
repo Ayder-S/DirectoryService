@@ -1,16 +1,15 @@
 ﻿using CSharpFunctionalExtensions;
-using DS.Application.Abstractions;
-using DS.Application.Commands;
 using DS.Application.Commands.Location;
-using DS.Application.Database;
+using DS.Application.Interfaces.Abstractions;
+using DS.Application.Interfaces.Database;
 using DS.Application.Validation;
 using DS.Contracts.Locations.Update;
 using DS.Domain.ValueObjects;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
-using Shared.AppFails;
+using Shared.Kernel.AppFails;
 
-namespace DS.Application.Locations;
+namespace DS.Application.Handlers.Locations;
 
 public class UpdateLocationNameHandler : ICommandHandler<Guid, UpdateLocationNameCommand>
 {
@@ -30,6 +29,9 @@ public class UpdateLocationNameHandler : ICommandHandler<Guid, UpdateLocationNam
 
     public async Task<Result<Guid, ErrorsList>> Handle(UpdateLocationNameCommand command, CancellationToken cancellationToken)
     {
+        if (command.Request is null)
+            return Error.Validation("request.is.required", "Тело запроса обязательно").ToErrors();
+        
         var validationResult = await _validator.ValidateAsync(command.Request, cancellationToken);
         if (!validationResult.IsValid)
             return validationResult.ToErrors();
@@ -50,6 +52,8 @@ public class UpdateLocationNameHandler : ICommandHandler<Guid, UpdateLocationNam
         var updateResult = await _locationsRepository.UpdateName(location, cancellationToken);
         if (updateResult.IsFailure)
             return updateResult.Error.ToErrors();
+        
+        _logger.LogInformation("Название локации {LocationId} успешно обновлено на название {LocationName}",  location.Id, name.Value);
 
         return command.Id;
     }

@@ -1,4 +1,4 @@
-﻿using DS.Application.Abstractions;
+﻿using DS.Application.Interfaces.Abstractions;
 using DS.Contracts.Locations.Update;
 
 namespace DS.Application.Commands.Location;

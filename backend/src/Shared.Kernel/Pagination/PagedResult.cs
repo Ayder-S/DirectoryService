@@ -1,4 +1,4 @@
-﻿namespace Shared.Pagination;
+﻿namespace Shared.Kernel.Pagination;
 
 public record PagedResult<T>(
     IReadOnlyList<T> Results,

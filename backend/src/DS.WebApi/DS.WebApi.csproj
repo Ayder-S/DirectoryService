@@ -20,6 +20,8 @@
       <ProjectReference Include="..\DS.Domain\DS.Domain.csproj" />
       <ProjectReference Include="..\DS.Infrastructure.Postgresql\DS.Infrastructure.Postgresql.csproj" />
       <ProjectReference Include="..\DS.Presenters\DS.Presenters.csproj" />
+      <ProjectReference Include="..\Shared.Observability\Shared.Observability.csproj" />
+      <ProjectReference Include="..\Shared.Web\Shared.Web.csproj" />
     </ItemGroup>
 
 </Project>

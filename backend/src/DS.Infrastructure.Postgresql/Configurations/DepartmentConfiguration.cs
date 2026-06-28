@@ -3,7 +3,7 @@ using DS.Domain.Entities;
 using DS.Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Shared.Constants;
+using Shared.Kernel.Constants;
 using Path = DS.Domain.ValueObjects.Path;
 
 namespace DS.Infrastructure.Postgresql.Configurations;

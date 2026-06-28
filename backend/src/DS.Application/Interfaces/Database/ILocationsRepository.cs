@@ -1,9 +1,9 @@
 ﻿using CSharpFunctionalExtensions;
 using DS.Domain.Entities;
 using DS.Domain.ValueObjects;
-using Shared.AppFails;
+using Shared.Kernel.AppFails;
 
-namespace DS.Application.Database;
+namespace DS.Application.Interfaces.Database;
 
 public interface ILocationsRepository
 {

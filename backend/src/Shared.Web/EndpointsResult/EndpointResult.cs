@@ -3,10 +3,10 @@ using CSharpFunctionalExtensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Metadata;
-using Shared.AppFails;
+using Shared.Kernel.AppFails;
 using IResult = Microsoft.AspNetCore.Http.IResult;
 
-namespace Shared.EndpointsResult;
+namespace Shared.Web.EndpointsResult;
 
 public sealed class EndpointResult<TValue> : IResult, IEndpointMetadataProvider
 {

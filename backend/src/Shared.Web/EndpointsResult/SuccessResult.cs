@@ -1,9 +1,9 @@
 ﻿using System.Net;
 using Microsoft.AspNetCore.Http;
-using Shared.AppFails;
+using Shared.Kernel.AppFails;
 using IResult = Microsoft.AspNetCore.Http.IResult;
 
-namespace Shared.EndpointsResult;
+namespace Shared.Web.EndpointsResult;
 
 public sealed class SuccessResult<TValue> : IResult
 {

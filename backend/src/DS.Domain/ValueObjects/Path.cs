@@ -1,5 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
-using Shared.AppFails;
+using Shared.Kernel.AppFails;
+
 
 namespace DS.Domain.ValueObjects;
 
