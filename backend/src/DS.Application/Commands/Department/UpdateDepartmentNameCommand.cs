@@ -1,4 +1,4 @@
-﻿using DS.Application.Abstractions;
+﻿using DS.Application.Interfaces.Abstractions;
 using DS.Contracts.Departments.Update;
 
 namespace DS.Application.Commands.Department;

@@ -1,7 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
-using Shared.AppFails;
+using Shared.Kernel.AppFails;
 
-namespace DS.Application.Abstractions;
+namespace DS.Application.Interfaces.Abstractions;
 
 public interface ICommand;
 

@@ -1,7 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
-using DS.Application.Abstractions;
 using DS.Application.Commands.Department;
-using DS.Application.Database;
+using DS.Application.Interfaces.Abstractions;
+using DS.Application.Interfaces.Database;
 using DS.Application.Validation;
 using DS.Contracts.Departments.Create;
 using DS.Domain.Entities;
@@ -9,9 +9,9 @@ using DS.Domain.Relation;
 using DS.Domain.ValueObjects;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
-using Shared.AppFails;
+using Shared.Kernel.AppFails;
 
-namespace DS.Application.Departments;
+namespace DS.Application.Handlers.Departments;
 
 public class CreateDepartmentHandler : ICommandHandler<Guid, CreateDepartmentCommand>
 {
@@ -34,6 +34,9 @@ public class CreateDepartmentHandler : ICommandHandler<Guid, CreateDepartmentCom
 
     public async Task<Result<Guid, ErrorsList>> Handle(CreateDepartmentCommand command, CancellationToken cancellationToken)
     {
+        if (command.Request is null)
+            return Error.Validation("request.is.required", "Тело запроса обязательно").ToErrors();
+        
         var validationResult = await _validator.ValidateAsync(command.Request, cancellationToken);
         if (!validationResult.IsValid)
             return validationResult.ToErrors();
@@ -68,6 +71,8 @@ public class CreateDepartmentHandler : ICommandHandler<Guid, CreateDepartmentCom
         var addResult = await _departmentsRepository.Add(department, relations, cancellationToken);
         if (addResult.IsFailure)
             return addResult.Error.ToErrors();
+        
+        _logger.LogInformation("Подразделение {DepartmentId} успешно создано с названием {DepartmentName}", department.Id, department.Name.Value);
 
         return department.Id;
     }

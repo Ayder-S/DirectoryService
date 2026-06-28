@@ -1,13 +1,11 @@
-using DS.Application.Abstractions;
 using DS.Application.Commands;
 using DS.Application.Commands.Location;
-using DS.Application.Locations;
+using DS.Application.Interfaces.Abstractions;
 using DS.Contracts.Locations.Create;
 using DS.Contracts.Locations.Get;
 using DS.Contracts.Locations.Update;
 using Microsoft.AspNetCore.Mvc;
-using Shared.EndpointsResult;
-using Shared.Pagination;
+using Shared.Web.EndpointsResult;
 
 namespace DS.Presenters.Controllers;
 

@@ -1,15 +1,15 @@
 ﻿using CSharpFunctionalExtensions;
-using DS.Application.Abstractions;
 using DS.Application.Commands.Department;
-using DS.Application.Database;
+using DS.Application.Interfaces.Abstractions;
+using DS.Application.Interfaces.Database;
 using DS.Application.Validation;
 using DS.Contracts.Departments.Update;
 using DS.Domain.ValueObjects;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
-using Shared.AppFails;
+using Shared.Kernel.AppFails;
 
-namespace DS.Application.Departments;
+namespace DS.Application.Handlers.Departments;
 
 public class UpdateDepartmentNameHandler : ICommandHandler<Guid, UpdateDepartmentNameCommand>
 {
@@ -26,6 +26,9 @@ public class UpdateDepartmentNameHandler : ICommandHandler<Guid, UpdateDepartmen
     
     public async Task<Result<Guid, ErrorsList>> Handle(UpdateDepartmentNameCommand command, CancellationToken cancellationToken)
     {
+        if (command.Request is null)
+            return Error.Validation("request.is.required", "Тело запроса обязательно").ToErrors();
+        
         var validationResult = await _validator.ValidateAsync(command.Request, cancellationToken);
         if (!validationResult.IsValid)
             return validationResult.ToErrors();
@@ -43,6 +46,8 @@ public class UpdateDepartmentNameHandler : ICommandHandler<Guid, UpdateDepartmen
         var updateResult = await _departmentsRepository.UpdateName(department, cancellationToken);
         if (updateResult.IsFailure)
             return updateResult.Error.ToErrors();
+        
+        _logger.LogInformation("Подразделение {DepartmentId} успешно обновлено", department.Id);
 
         return command.Id;
     }

@@ -2,13 +2,13 @@
 using System.Text.Json;
 using CSharpFunctionalExtensions;
 using Dapper;
-using DS.Application.Database;
+using DS.Application.Interfaces.Database;
 using DS.Domain.Entities;
 using DS.Domain.ValueObjects;
 using DS.Infrastructure.Postgresql.Database;
 using DS.Infrastructure.Postgresql.DbDtos;
 using Microsoft.Extensions.Logging;
-using Shared.AppFails;
+using Shared.Kernel.AppFails;
 
 namespace DS.Infrastructure.Postgresql.Repositories.LocationsRepositories;
 

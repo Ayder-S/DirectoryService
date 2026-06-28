@@ -1,13 +1,13 @@
 ﻿using CSharpFunctionalExtensions;
 using Dapper;
-using DS.Application.Database;
+using DS.Application.Interfaces.Database;
 using DS.Domain.Entities;
 using DS.Domain.Relation;
 using DS.Domain.ValueObjects;
 using DS.Infrastructure.Postgresql.Database;
 using DS.Infrastructure.Postgresql.DbDtos;
 using Microsoft.Extensions.Logging;
-using Shared.AppFails;
+using Shared.Kernel.AppFails;
 using Path = DS.Domain.ValueObjects.Path;                                                                                                                                                                
 
 namespace DS.Infrastructure.Postgresql.Repositories.DepartmentsRepositories;

@@ -1,4 +1,4 @@
-﻿namespace Shared.Constants;
+﻿namespace Shared.Kernel.Constants;
 
 public static class LengthConstants
 {

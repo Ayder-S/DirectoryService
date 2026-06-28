@@ -1,16 +1,15 @@
 ﻿using CSharpFunctionalExtensions;
-using DS.Application.Abstractions;
 using DS.Application.Commands.Location;
-using DS.Application.Database;
+using DS.Application.Interfaces.Abstractions;
+using DS.Application.Interfaces.Database;
 using DS.Application.Validation;
 using DS.Contracts.Locations.Update;
-using DS.Domain.Entities;
 using DS.Domain.ValueObjects;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
-using Shared.AppFails;
+using Shared.Kernel.AppFails;
 
-namespace DS.Application.Locations;
+namespace DS.Application.Handlers.Locations;
 
 public class UpdateLocationHandler : ICommandHandler<Guid, UpdateLocationCommand>
 {
@@ -30,6 +29,9 @@ public class UpdateLocationHandler : ICommandHandler<Guid, UpdateLocationCommand
 
     public async Task<Result<Guid, ErrorsList>> Handle(UpdateLocationCommand command, CancellationToken cancellationToken)
     {
+        if (command.Request is null)
+            return Error.Validation("request.is.required", "Тело запроса обязательно").ToErrors();
+        
         var validationResult = await _validator.ValidateAsync(command.Request, cancellationToken);
         if (!validationResult.IsValid)
             return validationResult.ToErrors();
@@ -50,15 +52,19 @@ public class UpdateLocationHandler : ICommandHandler<Guid, UpdateLocationCommand
             command.Request.Address.Building).Value;
 
         var timezone = Timezone.Create(command.Request.TimeZone).Value;
-        
+
         if (await _locationsRepository.ExistsByNameWithoutId(name, command.Id, cancellationToken))
+        {
             return Error.Conflict("location.name.taken", $"Локация с названием '{name.Value}' уже существует").ToErrors();
+        }
         
         location.UpdateLocation(name, address, timezone);
 
         var updateResult = await _locationsRepository.Update(location, cancellationToken);
         if (updateResult.IsFailure)
             return updateResult.Error.ToErrors();
+        
+        _logger.LogInformation("Локация {LocationId} успешно обновлена", location.Id);
 
         return command.Id;
     }

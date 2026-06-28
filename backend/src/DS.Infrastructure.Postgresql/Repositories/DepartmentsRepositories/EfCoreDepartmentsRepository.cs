@@ -1,10 +1,10 @@
 ﻿using CSharpFunctionalExtensions;
-using DS.Application.Database;
+using DS.Application.Interfaces.Database;
 using DS.Domain.Entities;
 using DS.Domain.Relation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Shared.AppFails;
+using Shared.Kernel.AppFails;
 
 namespace DS.Infrastructure.Postgresql.Repositories.DepartmentsRepositories;
 

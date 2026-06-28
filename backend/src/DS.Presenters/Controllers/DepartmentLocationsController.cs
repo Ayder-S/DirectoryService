@@ -1,9 +1,8 @@
 ﻿using CSharpFunctionalExtensions;
-using DS.Application.Abstractions;
 using DS.Application.Commands.DepartmentLocation;
+using DS.Application.Interfaces.Abstractions;
 using Microsoft.AspNetCore.Mvc;
-using Shared.AppFails;
-using Shared.EndpointsResult;
+using Shared.Web.EndpointsResult;
 
 namespace DS.Presenters.Controllers;
 

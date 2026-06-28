@@ -1,9 +1,9 @@
-﻿using DS.Application.Abstractions;
-using DS.Application.Commands.Department;
+﻿using DS.Application.Commands.Department;
+using DS.Application.Interfaces.Abstractions;
 using DS.Contracts.Departments.Create;
 using DS.Contracts.Departments.Update;
 using Microsoft.AspNetCore.Mvc;
-using Shared.EndpointsResult;
+using Shared.Web.EndpointsResult;
 
 namespace DS.Presenters.Controllers;
 

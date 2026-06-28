@@ -1,4 +1,4 @@
-﻿using DS.Application.Abstractions;
+﻿using DS.Application.Interfaces.Abstractions;
 
 namespace DS.Application.Commands.DepartmentLocation;
 

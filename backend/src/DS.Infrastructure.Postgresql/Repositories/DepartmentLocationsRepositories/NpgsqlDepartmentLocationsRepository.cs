@@ -1,11 +1,11 @@
 ﻿using CSharpFunctionalExtensions;
 using Dapper;
-using DS.Application.Database;
+using DS.Application.Interfaces.Database;
 using DS.Domain.Entities;
 using DS.Domain.Relation;
 using DS.Infrastructure.Postgresql.Database;
 using Microsoft.Extensions.Logging;
-using Shared.AppFails;
+using Shared.Kernel.AppFails;
 
 namespace DS.Infrastructure.Postgresql.Repositories.DepartmentLocationsRepositories;
 

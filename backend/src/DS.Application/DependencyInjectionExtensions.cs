@@ -1,5 +1,4 @@
-﻿using DS.Application.Abstractions;
-using DS.Contracts.Locations.Create;
+﻿using DS.Application.Interfaces.Abstractions;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 

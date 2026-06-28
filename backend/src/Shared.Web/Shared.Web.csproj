@@ -9,8 +9,10 @@
     <ItemGroup>
       <FrameworkReference Include="Microsoft.AspNetCore.App" />
       <PackageReference Include="CSharpFunctionalExtensions" Version="3.7.0" />
-      <PackageReference Include="FluentValidation" Version="12.1.1" />
-      <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Shared.Kernel\Shared.Kernel.csproj" />
     </ItemGroup>
 
 </Project>

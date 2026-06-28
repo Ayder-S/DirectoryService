@@ -1,7 +1,8 @@
 ﻿using System.Text.RegularExpressions;
 using CSharpFunctionalExtensions;
-using Shared.AppFails;
-using Shared.Constants;
+using Shared.Kernel.AppFails;
+using Shared.Kernel.Constants;
+
 
 namespace DS.Domain.ValueObjects;
 

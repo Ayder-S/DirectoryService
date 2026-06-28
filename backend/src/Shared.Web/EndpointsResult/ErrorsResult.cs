@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Shared.AppFails;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Shared.Kernel.AppFails;
 
-namespace Shared.EndpointsResult;
+
+namespace Shared.Web.EndpointsResult;
 
 public sealed class ErrorsResult : IResult
 {
@@ -21,8 +24,10 @@ public sealed class ErrorsResult : IResult
     {
         ArgumentNullException.ThrowIfNull(httpContext);
 
+        var logger = httpContext.RequestServices.GetRequiredService<ILogger<ErrorsResult>>();
         if (_errors.Count == 0)
         {
+            logger.LogError("Пустой список ошибок во время формирования ответа");
             httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
             return httpContext.Response.WriteAsJsonAsync(Envelope.Fail(_errors));
         }
@@ -35,6 +40,9 @@ public sealed class ErrorsResult : IResult
         int statusCode = distinctErrorTypes.Count > 1
             ? StatusCodes.Status500InternalServerError
             : GetStatusCodeFromErrorType(distinctErrorTypes.First());
+        
+        var level = statusCode >= 500 ? LogLevel.Error : LogLevel.Warning;
+        logger.Log(level, "Операция завершилась с ошибкой {StatusCode} и кодами {ErrorCodes}", statusCode, _errors.Select(e => e.Code).ToArray());
         
         var envelope = Envelope.Fail(_errors);
         httpContext.Response.StatusCode = statusCode;

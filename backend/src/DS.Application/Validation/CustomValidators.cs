@@ -1,7 +1,7 @@
-﻿using System.Text.Json;
-using CSharpFunctionalExtensions;
+﻿using CSharpFunctionalExtensions;
 using FluentValidation;
-using Shared.AppFails;
+using FluentValidation.Results;
+using Shared.Kernel.AppFails;
 
 namespace DS.Application.Validation;
 
@@ -18,13 +18,16 @@ public static class CustomValidators
             if (result.IsSuccess)
                 return;
             
-            context.AddFailure(JsonSerializer.Serialize(result.Error));
+            context.AddFailure(new ValidationFailure(context.PropertyPath, result.Error.Message)
+            {
+                CustomState = result.Error,
+            });
         });
     }
 
     public static IRuleBuilderOptions<T, TProperty> WithError<T, TProperty>(
         this IRuleBuilderOptions<T, TProperty> rule, Error error)
     {
-        return rule.WithMessage(JsonSerializer.Serialize(error));
+        return rule.WithState(_ => error).WithMessage(error.Message);
     }
 }

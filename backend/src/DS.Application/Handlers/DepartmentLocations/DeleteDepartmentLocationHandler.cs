@@ -1,11 +1,11 @@
 ﻿using CSharpFunctionalExtensions;
-using DS.Application.Abstractions;
 using DS.Application.Commands.DepartmentLocation;
-using DS.Application.Database;
+using DS.Application.Interfaces.Abstractions;
+using DS.Application.Interfaces.Database;
 using Microsoft.Extensions.Logging;
-using Shared.AppFails;
+using Shared.Kernel.AppFails;
 
-namespace DS.Application.DepartmentLocations;
+namespace DS.Application.Handlers.DepartmentLocations;
 
 public class DeleteDepartmentLocationHandler : ICommandHandler<DeleteDepartmentLocationCommand>
 {
@@ -28,6 +28,8 @@ public class DeleteDepartmentLocationHandler : ICommandHandler<DeleteDepartmentL
             await _departmentLocationsRepository.DeleteRelation(command.DepartmentId, command.LocationId, cancellationToken);
         if (deleteRelationResult.IsFailure)
             return deleteRelationResult.Error.ToErrors();
+        
+        _logger.LogInformation("Связь между Подразделением {DepartmentId} и Локацией {LocationId} успешно удалена", command.DepartmentId, command.LocationId);
         
         return UnitResult.Success<ErrorsList>();
     }
