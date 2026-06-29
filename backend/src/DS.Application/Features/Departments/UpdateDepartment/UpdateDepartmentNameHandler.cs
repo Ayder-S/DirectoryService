@@ -1,5 +1,4 @@
 ﻿using CSharpFunctionalExtensions;
-using DS.Application.Commands.Department;
 using DS.Application.Interfaces.Abstractions;
 using DS.Application.Interfaces.Database;
 using DS.Application.Validation;
@@ -9,7 +8,7 @@ using FluentValidation;
 using Microsoft.Extensions.Logging;
 using Shared.Kernel.AppFails;
 
-namespace DS.Application.Handlers.Departments;
+namespace DS.Application.Features.Departments.UpdateDepartment;
 
 public class UpdateDepartmentNameHandler : ICommandHandler<Guid, UpdateDepartmentNameCommand>
 {

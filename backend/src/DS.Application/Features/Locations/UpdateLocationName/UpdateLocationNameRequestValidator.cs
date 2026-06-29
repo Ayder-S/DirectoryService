@@ -1,8 +1,9 @@
-﻿using DS.Contracts.Locations.Update;
+﻿using DS.Application.Validation;
+using DS.Contracts.Locations.Update;
 using DS.Domain.ValueObjects;
 using FluentValidation;
 
-namespace DS.Application.Validation.LocationValidator;
+namespace DS.Application.Features.Locations.UpdateLocationName;
 
 public class UpdateLocationNameRequestValidator : AbstractValidator<UpdateLocationNameRequest>
 {

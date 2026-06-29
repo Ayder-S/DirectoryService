@@ -1,4 +1,5 @@
-﻿using DS.Application.Commands.Department;
+﻿using DS.Application.Features.Departments.CreateDepartment;
+using DS.Application.Features.Departments.UpdateDepartment;
 using DS.Application.Interfaces.Abstractions;
 using DS.Contracts.Departments.Create;
 using DS.Contracts.Departments.Update;

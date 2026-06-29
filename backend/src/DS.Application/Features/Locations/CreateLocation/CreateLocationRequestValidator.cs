@@ -1,8 +1,9 @@
-﻿using DS.Contracts.Locations.Create;
+﻿using DS.Application.Validation;
+using DS.Contracts.Locations.Create;
 using DS.Domain.ValueObjects;
 using FluentValidation;
 
-namespace DS.Application.Validation.LocationValidator;
+namespace DS.Application.Features.Locations.CreateLocation;
 
 public class CreateLocationRequestValidator : AbstractValidator<CreateLocationRequest>
 {

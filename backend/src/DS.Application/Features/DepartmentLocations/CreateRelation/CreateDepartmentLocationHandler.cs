@@ -1,11 +1,10 @@
 ﻿using CSharpFunctionalExtensions;
-using DS.Application.Commands.DepartmentLocation;
 using DS.Application.Interfaces.Abstractions;
 using DS.Application.Interfaces.Database;
 using Microsoft.Extensions.Logging;
 using Shared.Kernel.AppFails;
 
-namespace DS.Application.Handlers.DepartmentLocations;
+namespace DS.Application.Features.DepartmentLocations.CreateRelation;
 
 public class CreateDepartmentLocationHandler : ICommandHandler<CreateDepartmentLocationCommand>
 {
