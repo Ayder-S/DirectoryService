@@ -1,5 +1,4 @@
 ﻿using CSharpFunctionalExtensions;
-using DS.Application.Commands.Location;
 using DS.Application.Interfaces.Abstractions;
 using DS.Application.Interfaces.Database;
 using DS.Application.Validation;
@@ -9,7 +8,7 @@ using FluentValidation;
 using Microsoft.Extensions.Logging;
 using Shared.Kernel.AppFails;
 
-namespace DS.Application.Handlers.Locations;
+namespace DS.Application.Features.Locations.UpdateLocation;
 
 public class UpdateLocationHandler : ICommandHandler<Guid, UpdateLocationCommand>
 {

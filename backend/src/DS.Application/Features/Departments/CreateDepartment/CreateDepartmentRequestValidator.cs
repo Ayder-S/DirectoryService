@@ -1,8 +1,9 @@
-﻿using DS.Contracts.Departments.Create;
+﻿using DS.Application.Validation;
+using DS.Contracts.Departments.Create;
 using DS.Domain.ValueObjects;
 using FluentValidation;
 
-namespace DS.Application.Validation.DepartmentValidator;
+namespace DS.Application.Features.Departments.CreateDepartment;
 
 public class CreateDepartmentRequestValidator : AbstractValidator<CreateDepartmentRequest>
 {

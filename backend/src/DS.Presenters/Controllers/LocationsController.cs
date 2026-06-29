@@ -1,5 +1,6 @@
-using DS.Application.Commands;
-using DS.Application.Commands.Location;
+using DS.Application.Features.Locations.CreateLocation;
+using DS.Application.Features.Locations.UpdateLocation;
+using DS.Application.Features.Locations.UpdateLocationName;
 using DS.Application.Interfaces.Abstractions;
 using DS.Contracts.Locations.Create;
 using DS.Contracts.Locations.Get;

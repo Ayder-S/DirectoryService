@@ -1,5 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
-using DS.Application.Commands.DepartmentLocation;
+using DS.Application.Features.DepartmentLocations.CreateRelation;
+using DS.Application.Features.DepartmentLocations.DeleteRelation;
 using DS.Application.Interfaces.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 using Shared.Web.EndpointsResult;
